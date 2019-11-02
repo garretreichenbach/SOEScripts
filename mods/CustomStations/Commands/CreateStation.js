@@ -1,0 +1,2 @@
+var MiningStation = require('MiningStation');
+

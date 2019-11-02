@@ -1,0 +1,34 @@
+# Test against the latest version of this Node.js version
+environment:
+  nodejs_version: "10"
+
+platform:
+  - x64
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node.js or io.js
+  - ps: Install-Product node $env:nodejs_version $env:platform
+  # install modules
+  # - npm -g i eslint-cli
+  # - npm i eslint
+  # - npm install
+  # - npm install --save-dev
+  - npm ci # this does a clean install
+  # - npm install --save-dev eslint@^4.18.2
+  # - eslint lib
+  - npm -g i eslint-cli
+
+
+
+# Post-install test scripts.
+test_script:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # run tests
+  - npm test
+  # - eslint starmade.js
+
+# Don't actually build.
+build: off
