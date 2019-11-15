@@ -26,7 +26,7 @@ function modifyStationValues(filePath) {
         } else {
             let stuffToAdd = {};
             for (let i = 0; i < resourceConfig.length; i ++) {
-                if (stuffToAdd.hasOwnProperty(resourceConfig[i].item)){ // If the item has duplicates, add the number counts together.
+                if (stuffToAdd.hasOwnProperty(resourceConfig[i].item)) { // If the item has duplicates, add the number counts together.
                     stuffToAdd[resourceConfig[i].item] = Number(stuffToAdd[resourceConfig[i].item]) + Number(resourceConfig[i].count);
                 } else {
                     stuffToAdd[resourceConfig[i].item] = resourceConfig[i].count;
@@ -38,9 +38,14 @@ function modifyStationValues(filePath) {
             for (let i = 0; i < resourceList.length; i ++){
                 for (let key in stuffToAdd){
                     if (stuffToAdd.hasOwnProperty(key)){ // Only act on elements I added, not javascript protype functions
-                        if (resourceList[i].item == key){
-                            resourceList[i].count = Number(stuffToAdd[key]) + Number(resourceList[i].count);
-                            resourcesAdded.push(key);
+                        if (resourceList[i].item == key) {
+                            if(resourceList[i].count < 5000000) {
+                                resourceList[i].count = Number(stuffToAdd[key]) + Number(resourceList[i].count);
+                                resourcesAdded.push(key);
+                            } else if(resourceList[i].count >= 5000000) {
+                                resourceList[i].count = 5000000;
+                                console.log("Tried to add to a station's storage but the storage was already full! Skipping...");
+                            }
                         }
                     }
                 }
