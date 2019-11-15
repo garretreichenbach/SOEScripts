@@ -37,8 +37,6 @@ async function command (player, command, args, messageObj) {
         if(i(args[0],"set")) { // station set
             if(i(args[1],"mining")) { // station set mining
                 createStation.createMiningStation(player);
-            } else if(i(args[1], "outpost")) { // station set outpost
-                
             }
         }
         else if(i(args[0], "refill")) {
