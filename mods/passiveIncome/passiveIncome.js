@@ -66,10 +66,6 @@ async function command (player,command,args,messageObj) {
                 }
             }
         } else if (i(args[0],"extract")) {
-            // let playerSectorObj=await player.sector(); // We do not need to know the location of the player, only the UID of the station.
-            // let playerPos = await player.playerCoords; // wrong
-            // let entityUID = global.returnEntityUIDList(playerPos,"ENTITY_SPACESTATION_");
-            // let station = global.EntityObj(entityUID);
             let playerFactionObj = await player.faction();
             let playerCurrentEntity=await player.currentEntity();
             let playerCurrentEntityType;
@@ -87,7 +83,6 @@ async function command (player,command,args,messageObj) {
                             }
                             let registeredStationObj=JSON.parse(result);
                             console.log("registeredStationObj:",registeredStationObj);
-                            //if (registeredStationObj.faction == playerFactionObj.toString()) { // Values do not need to be coerced to be Number or String type if using == instead of === (strict compare)
                                 let storageList = registeredStationObj.storage;
                                 let storageListCopy = objectHelper.copyArray(storageList);
                                 console.log("storageList:",storageList);
@@ -166,8 +161,16 @@ async function command (player,command,args,messageObj) {
                 await player.msg("How can you extract from that which does not exist?  Please enter a station entity that has been registered as a mining factility to collect!");
             }
         } else if (i(args[0],"refill")) {
-            addResources();
-            await player.msg("Stations have been refilled!");
+            return player.isAdmin("",function(err,result){
+                if (err){
+                    console.log("Error seeing if player was an admin!").catch((err) => console.error(err));
+                } else if (result == true){
+                    player.msg("Refilling this station's resources!").catch((err) => console.error(err));
+                    addResources();
+                } else {
+                    player.msg("Sorry, only admins can refill a station!").catch((err) => console.error(err));
+                }
+            });
         }
     }
     return true; // added to make ESLint happy.
@@ -252,7 +255,6 @@ function modifyStationValues(filePath){
                     global.log("Unable to write new values to file: " + filePath);
                     return err;
                 } else {
-                    console.log("File write succeeded!"); // We should probably not display this since a lot of stations might be getting written to.
                     return true;
                 }
             });
