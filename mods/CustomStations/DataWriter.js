@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path= require('path');
-const stationsFolder = path.join(__dirname, "stations");
+const stationsFolder = path.join(__dirname, "../data/stations");
 
 exports.addStation = function(stationObj, factionObj, cb) {
     console.log("addMiningStation function ran..");
